@@ -28,3 +28,5 @@ resource "azurerm_storage_container" "demo2" {
   container_access_type = "container"
 }
 
+
+

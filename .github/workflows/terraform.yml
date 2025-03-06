@@ -8,6 +8,10 @@ on:
 jobs:
   terraform:
     runs-on: ubuntu-latest
+    outputs:
+      storage_account_name: ${{ steps.get_storage_name.outputs.storage_account_name }}
+      storage_account_key: ${{ steps.get_storage_key.outputs.storage_account_key }}
+      storage_container_name: ${{ steps.get_storage_key.outputs.storage_container_name }}
 
     steps:
     - name: Checkout repository
@@ -38,3 +42,69 @@ jobs:
 
     # - name: Terraform destroy
     #   run: terraform destroy -auto-approve
+
+    - name: Get Storage Account Name from Terraform
+      id: get_storage_name
+      run: echo "storage_account_name=$(terraform output -raw storage_account_name)" >> $GITHUB_ENV
+
+    - name: Get Storage Account Key from Terraform
+      id: get_storage_key
+      run: echo "storage_account_key=$(terraform output -raw storage_account_key)" >> $GITHUB_ENV
+
+    - name: Get Storage Container Name from Terraform
+      id: get_container_name
+      run: echo "storage_container_name=$(terraform output -raw storage_container_name)" >> $GITHUB_ENV
+
+
+  build-and-test:
+    name: Build and Deploy React App
+    needs: terraform
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16.x'
+
+      - name: Clear npm cache
+        run: |
+          npm cache clean --force
+
+      # - name: defining working directory
+      #   run: |
+      #     mkdir -p ./naveen
+      #     cd ./naveen
+
+      - name: Install dependencies
+        run: |
+          npm install -g azure-cli
+          npm install
+        working-directory: ./react-app
+
+      - name: check aws cli version
+        run: az --version
+
+      - name: build project
+        run: npm run build
+        working-directory: ./react-app
+
+      - name: remove node module
+        run: rm -rf /home/runner/work/react-calculator/react-calculator/node_modules
+
+      - name: List build folder contents
+        run: |
+          ls /home/runner/work/react-calculator/react-calculator
+          ls -ltr build && pwd build
+
+      - name: Upload React App to Azure Blob Storage
+        run: |
+          az storage blob upload-batch --account-name ${{ needs.terraform.outputs.storage_account_name }} \
+            --account-key ${{ needs.terraform.outputs.storage_account_key }} \
+            --destination ${{ needs.terraform.outputs.storage_container_name }} \
+            --source ./react-app/build \
+            --overwrite
+
