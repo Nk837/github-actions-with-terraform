@@ -45,15 +45,21 @@ jobs:
 
     - name: Get Storage Account Name from Terraform
       id: get_storage_name
-      run: echo "storage_account_name=$(terraform output -raw storage_account_name)" >> $GITHUB_ENV
+      run: |
+        STORAGE_NAME=$(terraform output -raw storage_account_name | grep -oP '^[a-zA-Z0-9-]+$')
+        echo "storage_account_name=$STORAGE_NAME" >> $GITHUB_ENV
 
     - name: Get Storage Account Key from Terraform
       id: get_storage_key
-      run: echo "storage_account_key=$(terraform output -raw storage_account_key)" >> $GITHUB_ENV
+      run: |
+        STORAGE_ACCOUNT_KEY=$(terraform output -raw storage_account_key | grep -oP '^[a-zA-Z0-9-]+$')
+        echo "storage_account_key=$STORAGE_ACCOUNT_KEY" >> $GITHUB_ENV
 
     - name: Get Storage Container Name from Terraform
       id: get_container_name
-      run: echo "storage_container_name=$(terraform output -raw storage_container_name)" >> $GITHUB_ENV
+      run: |
+        STORAGE_CONTAINER_NAME=$(terraform output -raw storage_container_name | grep -oP '^[a-zA-Z0-9-]+$')
+        echo "storage_container_name=$STORAGE_CONTAINER_NAME" >> $GITHUB_ENV
 
 
   build-and-test:
