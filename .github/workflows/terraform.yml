@@ -101,6 +101,6 @@ jobs:
 
     - name: Upload React App to Azure Blob Storage
       run: |
-        azcopy copy './build/*' 'https://examplestorageacc6837.blob.core.windows.net/react-calculator' --recursive
+        azcopy copy './build/*' 'https://examplestorageacc6837.blob.core.windows.net/react-calculator' --recursive --account-key ${{ needs.terraform.output.storage_account_key }}
 
 
