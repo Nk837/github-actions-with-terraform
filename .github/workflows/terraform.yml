@@ -107,4 +107,4 @@ jobs:
 
       - name: Upload React App to Azure Blob Storage
         run: |
-          az storage blob upload-batch --destination react-calculator --source /home/runner/work/github-actions-with-terraform/github-actions-with-terraform/build/ --pattern 
+          az storage blob upload-batch --destination react-calculator --source /home/runner/work/github-actions-with-terraform/github-actions-with-terraform/build/ 
