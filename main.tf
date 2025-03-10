@@ -27,6 +27,3 @@ resource "azurerm_storage_container" "demo2" {
   storage_account_name = azurerm_storage_account.demo2.name
   container_access_type = "container"
 }
-
-
-
