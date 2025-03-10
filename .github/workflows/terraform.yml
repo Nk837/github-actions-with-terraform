@@ -61,8 +61,18 @@ jobs:
         STORAGE_CONTAINER_NAME=$(terraform output -raw storage_container_name | sed 's/::debug::.*//' | tr -d '\n')
         echo "storage_container_name=$STORAGE_CONTAINER_NAME" >> $GITHUB_ENV
 
+  Build-and-test:
+    needs: terraform
+    runs-on: ubuntu-latest
 
- 
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+  
+    - uses: azure/login@v2
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
     - name: Checkout code
       uses: actions/checkout@v2
 
@@ -101,6 +111,6 @@ jobs:
 
     - name: Upload React App to Azure Blob Storage
       run: |
-        azcopy copy './build/*' 'https://examplestorageacc6837.blob.core.windows.net/react-calculator' --recursive --account-key ${{ needs.terraform.output.storage_account_key }}
+        azcopy copy './build/*' 'https://examplestorageacc6837.blob.core.windows.net/react-calculator' --recursive
 
 
