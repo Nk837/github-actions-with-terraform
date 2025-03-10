@@ -80,23 +80,22 @@ jobs:
         run: |
           npm cache clean --force
 
-      # - name: defining working directory
-      #   run: |
-      #     mkdir -p ./naveen
-      #     cd ./naveen
+      - name: defining working directory
+        run: |
+          pwd
 
       - name: Install dependencies
         run: |
           npm install -g azure-cli
           npm install
-        working-directory: ./react-app
+        # working-directory: ./react-app
 
       - name: check aws cli version
         run: az --version
 
       - name: build project
         run: npm run build
-        working-directory: ./react-app
+        # working-directory: ./react-app
 
       - name: remove node module
         run: rm -rf /home/runner/work/react-calculator/react-calculator/node_modules
