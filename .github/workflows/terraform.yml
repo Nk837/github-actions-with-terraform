@@ -110,6 +110,6 @@ jobs:
           az storage blob upload-batch --account-name ${{ needs.terraform.outputs.storage_account_name }} \
             --account-key ${{ needs.terraform.outputs.storage_account_key }} \
             --destination ${{ needs.terraform.outputs.storage_container_name }} \
-            --source ./react-app/build \
+            --source ./build \
             --overwrite
 
