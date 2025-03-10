@@ -62,50 +62,45 @@ jobs:
         echo "storage_container_name=$STORAGE_CONTAINER_NAME" >> $GITHUB_ENV
 
 
-  build-and-test:
-    name: Build and Deploy React App
-    needs: terraform
-    runs-on: ubuntu-latest
+ 
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16.x'
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '16.x'
+    - name: Clear npm cache
+      run: |
+        npm cache clean --force
 
-      - name: Clear npm cache
-        run: |
-          npm cache clean --force
-
-      - name: defining working directory
-        run: |
+    - name: defining working directory
+      run: |
           pwd
 
-      - name: Install dependencies
-        run: |
-          npm install -g azure-cli
-          npm install
+    - name: Install dependencies
+      run: |
+        npm install -g azure-cli
+        npm install
         # working-directory: ./react-app
 
-      - name: check aws cli version
-        run: az --version
+    - name: check aws cli version
+      run: az --version
 
-      - name: build project
-        run: npm run build
+    - name: build project
+      run: npm run build
         # working-directory: ./react-app
 
-      - name: List build folder contents
-        run: |
-          ls -l ./build/
+    - name: List build folder contents
+      run: |
+        ls -l ./build/
 
-      - name: remove node module
-        run: rm -rf /home/runner/work/github-actions-with-terraform/github-actions-with-terraform/node_modules
+    - name: remove node module
+      run: rm -rf /home/runner/work/github-actions-with-terraform/github-actions-with-terraform/node_modules
 
-      - name: Upload React App to Azure Blob Storage
-        run: |
-          azcopy copy './build/*' 'https://examplestorageacc6837.blob.core.windows.net/react-calculator' --recursive
+    - name: Upload React App to Azure Blob Storage
+      run: |
+        azcopy copy './build/*' 'https://examplestorageacc6837.blob.core.windows.net/react-calculator' --recursive
 
 
