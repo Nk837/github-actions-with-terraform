@@ -99,12 +99,12 @@ jobs:
 
       - name: List build folder contents
         run: |
-          ls /home/runner/work/github-actions-with-terraform/github-actions-with-terraform
-          ls -ltr build && pwd build
+          ls -l ./build/
+
 
       - name: remove node module
         run: rm -rf /home/runner/work/github-actions-with-terraform/github-actions-with-terraform/node_modules
 
       - name: Upload React App to Azure Blob Storage
         run: |
-          az storage blob upload-batch --destination react-calculator --source ./build/ --pattern *.*
+          az storage blob upload-batch --destination react-calculator --source /home/runner/work/github-actions-with-terraform/github-actions-with-terraform/build/ --pattern 
