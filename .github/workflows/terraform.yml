@@ -97,13 +97,13 @@ jobs:
         run: npm run build
         # working-directory: ./react-app
 
-      - name: remove node module
-        run: rm -rf /home/runner/work/react-calculator/react-calculator/node_modules
-
       - name: List build folder contents
         run: |
-          ls /home/runner/work/react-calculator/react-calculator
+          ls /home/runner/work/github-actions-with-terraform/github-actions-with-terraform
           ls -ltr build && pwd build
+
+      - name: remove node module
+        run: rm -rf /home/runner/work/github-actions-with-terraform/github-actions-with-terraform/node_modules
 
       - name: Upload React App to Azure Blob Storage
         run: |
