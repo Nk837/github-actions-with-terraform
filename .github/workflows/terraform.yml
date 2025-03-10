@@ -106,9 +106,5 @@ jobs:
 
       - name: Upload React App to Azure Blob Storage
         run: |
-          az storage blob upload-batch --account-name ${{ needs.terraform.outputs.storage_account_name }} \
-            --account-key ${{ needs.terraform.outputs.storage_account_key }} \
-            --destination ${{ needs.terraform.outputs.storage_container_name }} \
-            --source /home/runner/work/github-actions-with-terraform/github-actions-with-terraform/build/
-            --overwrite
+          az storage blob upload-batch --account-name ${{ needs.terraform.outputs.storage_account_name }} --account-key ${{ needs.terraform.outputs.storage_account_key }} --destination ${{ needs.terraform.outputs.storage_container_name }} --source ./build/ --overwrite
 
