@@ -90,7 +90,7 @@ jobs:
           npm install
         # working-directory: ./react-app
 
-      - name: check aws cli version
+      - name: check azure cli version
         run: az --version
 
       - name: build project
@@ -107,4 +107,4 @@ jobs:
 
       - name: Upload React App to Azure Blob Storage
         run: |
-          az storage blob upload-batch --destination react-calculator --source ./build/*
+          az storage blob upload-batch --destination react-calculator --source ./build/ --pattern *.*
