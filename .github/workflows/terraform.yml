@@ -90,7 +90,7 @@ jobs:
           npm install
         # working-directory: ./react-app
 
-      - name: check azure cli version
+      - name: check aws cli version
         run: az --version
 
       - name: build project
@@ -101,10 +101,14 @@ jobs:
         run: |
           ls -l ./build/
 
-
       - name: remove node module
         run: rm -rf /home/runner/work/github-actions-with-terraform/github-actions-with-terraform/node_modules
 
       - name: Upload React App to Azure Blob Storage
         run: |
-          az storage blob upload-batch --destination react-calculator --source /home/runner/work/github-actions-with-terraform/github-actions-with-terraform/build/ 
+          az storage blob upload-batch --account-name ${{ needs.terraform.outputs.storage_account_name }} \
+            --account-key ${{ needs.terraform.outputs.storage_account_key }} \
+            --destination ${{ needs.terraform.outputs.storage_container_name }} \
+            --source /home/runner/work/github-actions-with-terraform/github-actions-with-terraform/build/
+            --overwrite
+
