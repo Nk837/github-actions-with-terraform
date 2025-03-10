@@ -43,11 +43,11 @@ jobs:
     # - name: Terraform destroy
     #   run: terraform destroy -auto-approve
 
-    - name: Get Storage Account Name from Terraform
-      id: get_storage_name
-      run: |
-        STORAGE_NAME=$(terraform output -raw storage_account_name | sed 's/::debug::.*//')
-        echo "storage_account_name=$STORAGE_NAME" >> $GITHUB_ENV
+    # - name: Get Storage Account Name from Terraform
+    #   id: get_storage_name
+    #   run: |
+    #     STORAGE_NAME=$(terraform output -raw storage_account_name | sed 's/::debug::.*//')
+    #     echo "storage_account_name=$STORAGE_NAME" >> $GITHUB_ENV
 
     - name: Get Storage Account Key from Terraform
       id: get_storage_key
