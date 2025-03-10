@@ -43,12 +43,11 @@ jobs:
     # - name: Terraform destroy
     #   run: terraform destroy -auto-approve
 
-    # - name: Get Storage Account Name from Terraform
-    #   id: get_storage_name
-    #   run: |
-    #     terraform output -raw storage_account_name > storage_name.txt
-    #     cat storage_name.txt
-    #     echo "storage_account_name=$(cat storage_name.txt)" >> $GITHUB_ENV
+    - name: Get Storage Account Name from Terraform
+      id: get_storage_name
+      run: |
+        STORAGE_NAME=$(terraform output -raw storage_account_name | sed 's/::debug::.*//')
+        echo "storage_account_name=$STORAGE_NAME" >> $GITHUB_ENV
 
     - name: Get Storage Account Key from Terraform
       id: get_storage_key
@@ -59,7 +58,7 @@ jobs:
     - name: Get Storage Container Name from Terraform
       id: get_container_name
       run: |
-        STORAGE_CONTAINER_NAME=$(terraform output -raw storage_container_name | grep -oP '^[a-zA-Z0-9-]+$')
+        STORAGE_CONTAINER_NAME=$(terraform output -raw storage_container_name | sed 's/::debug::.*//')
         echo "storage_container_name=$STORAGE_CONTAINER_NAME" >> $GITHUB_ENV
 
 
