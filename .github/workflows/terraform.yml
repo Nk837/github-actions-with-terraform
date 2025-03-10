@@ -58,7 +58,7 @@ jobs:
     - name: Get Storage Container Name from Terraform
       id: get_container_name
       run: |
-        STORAGE_CONTAINER_NAME=$(terraform output -raw storage_container_name | sed 's/::debug::.*//')
+        STORAGE_CONTAINER_NAME=$(terraform output -raw storage_container_name | sed 's/::debug::.*//' | tr -d '\n')
         echo "storage_container_name=$STORAGE_CONTAINER_NAME" >> $GITHUB_ENV
 
 
