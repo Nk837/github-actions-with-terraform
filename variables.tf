@@ -10,10 +10,25 @@ variable "storage_account_name" {
 
 variable "container_name" {
     type = list(string)
-  default = ["tfstate", "react-calculator"]
+  default = ["tfstate", "$web"]
 }
 
 variable "location" {
     type = list(string)
   default = ["East US"]
+}
+
+variable "vnet" {
+  default = "test"
+}
+
+variable "vm" {
+  default = "test"
+}
+
+variable "admin_username" {
+  default = "naveen"
+}
+variable "admin_password" {
+  default = "Rahul.@12345"
 }
